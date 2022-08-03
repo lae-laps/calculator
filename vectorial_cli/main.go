@@ -11,8 +11,6 @@ import (
 var vec = vector{
     x:      100,
     y:      100,
-    theta:  0.79,
-    module: 141.42,
 }
 
 // CLI conf
@@ -45,6 +43,8 @@ func banner() {
 func interactive_ui() {
     //banner()
 
+    vec.polar_from_cart() // set polar coordenates from cartesian as initialized to 100 100 
+
     for {
         print("v > ", 15)
         in := bufio.NewReader(os.Stdin)
@@ -59,12 +59,20 @@ func parse(expression string) {
     split := strings.Split(expression, " ")
     switch split[0] {
         case "set":
-            if len(split) == 3 {
+            if len(split) >= 3 {
                 x, err := strconv.ParseFloat(split[1], 32)
                 handle(err)
                 y, err := strconv.ParseFloat(split[2], 32)
                 handle(err)
                 vec.set_cart(x, y)
+            } else {
+                printRuntimeError("Invalid number of arguments\n")
+            }
+        case "rot":
+            if len(split) >= 2 {
+                difference, err := strconv.ParseFloat(split[1], 32)
+                handle(err)
+                vec.rot(difference)
             } else {
                 printRuntimeError("Invalid number of arguments\n")
             }
