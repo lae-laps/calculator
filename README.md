@@ -29,3 +29,5 @@ Here is a list of the basic syntax
 
  - **rot <angle>** - rotates the vector by the quantity specified
 
+ - **elong <amount>** - elongates the vector without changing the angle by the ammount provided
+
