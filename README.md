@@ -27,6 +27,3 @@ Here is a list of the basic syntax
 
  - **show** - shows info about the current buffer
 
-
-hola que tal **estas** tu hou?
-
