@@ -23,7 +23,10 @@ Command Line Interface to work with vectorial calculus
 The tool is based on an interactive CLI paradigm
 Here is a list of the basic syntax
 
- - *set <Vₓ> <Vᵧ>* -> sets vector from cartesian input
+ - **set <Vₓ> <Vᵧ>** - sets vector from cartesian input
 
- - *show* -> shows info about the current buffer
+ - **show** - shows info about the current buffer
+
+
+hola que tal **estas** tu hou?
 
