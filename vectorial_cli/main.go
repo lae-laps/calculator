@@ -40,10 +40,22 @@ func banner() {
     `, 15)
 }
 
+func help() {
+    printBold("Help for Vector - CLI\n", 15)
+    fmt.Print(" - "); printBold("set <Vₓ> <Vᵧ>", 15); fmt.Print(" - sets vector from cartesian input\n - ")
+    printBold("show", 15); fmt.Print(" - shows info about the current buffer\n - ")
+    printBold("rot <angle>", 15); fmt.Print(" - rotates the vector by the quantity specified\n - ")
+    printBold("invert", 15); fmt.Print(" - inverts the vector in both cartesian axis\n - ")
+    printBold("elong <amount>", 15); fmt.Print(" - elongates the vector without changing the angle by the ammount provided\n - ")
+    printBold("clear", 15); fmt.Print(" - clears the screen\n - ")
+    printBold("exit", 15); fmt.Print(" - exits the program\n - ")
+    printBold("help", 15); fmt.Print(" - displays this help message\n")
+}
+
 func interactive_ui() {
     //banner()
 
-    vec.polar_from_cart() // set polar coordenates from cartesian as initialized to 100 100 
+    vec.polar_from_cartesian() // set polar coordenates from cartesian as initialized to 100 100 
 
     for {
         print("v > ", 15)
@@ -86,8 +98,14 @@ func parse(expression string) {
             } else {
                 printRuntimeError("Invalid number of arguments\n")
             }
+        case "invert":
+            vec.invert()
+            break
         case "show":
             vec.print_disposition()
+            break
+        case "help":
+            help()
             break
         case "clear":
             clearScreen()

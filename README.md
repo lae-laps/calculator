@@ -28,6 +28,14 @@ Here is a list of the basic syntax
  - **show** - shows info about the current buffer
 
  - **rot <angle>** - rotates the vector by the quantity specified
+ 
+ - **invert** - inverts the vector in both cartesian axis
 
  - **elong <amount>** - elongates the vector without changing the angle by the ammount provided
+
+ - **clear** - clears the screen
+
+ - **exit** - exits the program
+
+ - **help** - displays this help message
 
