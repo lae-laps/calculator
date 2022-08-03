@@ -32,7 +32,7 @@ func (self *vector) polar_from_cartesian() {
 func (self *vector) print_disposition() {
     print("Vₓ", 196); fmt.Printf(" = %.3f\n", self.x)
     print("Vᵧ", 46); fmt.Printf(" = %.3f\n", self.y)
-    print("θ", 5); fmt.Printf("  = %.2f° (%.3f rad)\n", self.degree, self.rad)
+    print("θ", 5); fmt.Printf("  = %.3f° (%.3f rad)\n", self.degree, self.rad)
     print("v", 5); fmt.Printf("  = %.3f\n", self.module)
 }
 
