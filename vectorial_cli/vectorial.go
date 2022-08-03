@@ -49,7 +49,7 @@ func (self *vector) rot(diff float64) {
     diff = rad_from_degrees(diff)
     self.rad = self.rad + diff
     self.x = self.module * math.Cos(self.rad)
-    self.y = self.module + math.Sin(self.rad)
+    self.y = self.module * math.Sin(self.rad)
     self.polar_from_cartesian()
     if show_changes_in_vectors {
         self.print_disposition()
@@ -66,8 +66,8 @@ func (self *vector) elong(amount float64) {
 }
 
 func (self *vector) invert() {
-    self.x = self.x * -1
-    self.y = self.y * -1
+    self.x = -self.x 
+    self.y = -self.y
     self.polar_from_cartesian()
     if show_changes_in_vectors {
         self.print_disposition()
