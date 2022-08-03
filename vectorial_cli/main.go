@@ -9,8 +9,8 @@ import (
 )
    
 var vec = vector{
-    x:      100,
-    y:      100,
+    x: 1,
+    y: 1,
 }
 
 // CLI conf
