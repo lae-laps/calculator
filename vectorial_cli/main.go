@@ -44,8 +44,11 @@ func help() {
     printBold("Help for Vector - CLI\n", 15)
     fmt.Print(" - "); printBold("set <Vₓ> <Vᵧ>", 15); fmt.Print(" - sets vector from cartesian input\n - ")
     printBold("show", 15); fmt.Print(" - shows info about the current buffer\n - ")
+    printBold("arc", 15); fmt.Print(" - displays the arc of the vector\n - ")
+    printBold("sector", 15); fmt.Print(" - displays the sector of the vector\n - ")
     printBold("rot <angle>", 15); fmt.Print(" - rotates the vector by the quantity specified\n - ")
     printBold("invert", 15); fmt.Print(" - inverts the vector in both cartesian axis\n - ")
+    printBold("flat <x/y>", 15); fmt.Print(" - Flats the vector in the corresponding coordinate\n - ")
     printBold("elong <amount>", 15); fmt.Print(" - elongates the vector without changing the angle by the ammount provided\n - ")
     printBold("clear", 15); fmt.Print(" - clears the screen\n - ")
     printBold("exit", 15); fmt.Print(" - exits the program\n - ")
@@ -101,8 +104,30 @@ func parse(expression string) {
         case "invert":
             vec.invert()
             break
+        case "flat":
+            if len(split) >= 2 {
+                switch split[1] {
+                    case "x":
+                        vec.flat('x')
+                    case "y":
+                        vec.flat('y')
+                    case "z":
+                        vec.flat('z')
+                    default:
+                        printUserError("Please use a valid axis - (x/y/z)\n")
+                }
+            } else {
+                printRuntimeError("Invalid number of arguments\n")
+            }
+            break
         case "show":
             vec.print_disposition()
+            break
+        case "arc":
+            vec.arc()
+            break
+        case "sector":
+            vec.sector()
             break
         case "help":
             help()

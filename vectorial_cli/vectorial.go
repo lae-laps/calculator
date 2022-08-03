@@ -47,10 +47,10 @@ func (self *vector) set_cart(x, y float64) {
 
 func (self *vector) rot(diff float64) {
     diff = rad_from_degrees(diff)
-    alpha := self.rad + diff
-    self.rad = alpha
-    self.x = self.module * math.Cos(alpha)
-    self.y = self.module + math.Sin(alpha)
+    self.rad = self.rad + diff
+    self.x = self.module * math.Cos(self.rad)
+    self.y = self.module + math.Sin(self.rad)
+    self.polar_from_cartesian()
     if show_changes_in_vectors {
         self.print_disposition()
     }
@@ -72,5 +72,40 @@ func (self *vector) invert() {
     if show_changes_in_vectors {
         self.print_disposition()
     }
+}
+
+func (self *vector) flat(axis byte) {
+    switch axis {
+        case 'x':
+            self.y = 0
+            break
+        case 'y':
+            self.x = 0
+            break
+        case 'z':
+            break
+        default:
+            printRuntimeError("Invalid character\n")
+    }
+    self.polar_from_cartesian()
+    if show_changes_in_vectors {
+        self.print_disposition()
+    }
+}
+
+func (self *vector) arc() float64 {
+    arc := self.module * self.rad
+    if show_changes_in_vectors {
+       print("arc ⌀", 5); fmt.Printf(" = %.3f\n", arc)
+    }
+    return arc
+}
+
+func (self *vector) sector() float64 {
+    sector := (self.rad * (self.module * self.module) / 2)
+    if show_changes_in_vectors {
+        print("sector ⌔", 5); fmt.Printf(" = %.3f\n", sector)
+    }
+    return sector
 }
 

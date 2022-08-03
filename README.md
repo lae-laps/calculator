@@ -27,9 +27,15 @@ Here is a list of the basic syntax
 
  - **show** - shows info about the current buffer
 
+ - **arc** - displays the arc of the vector
+
+ - **sector** - displays the sector of the circle
+
  - **rot <angle>** - rotates the vector by the quantity specified
  
  - **invert** - inverts the vector in both cartesian axis
+
+ - **flat <x/y>** - flats the vector in the corresponding coordinate
 
  - **elong <amount>** - elongates the vector without changing the angle by the ammount provided
 
