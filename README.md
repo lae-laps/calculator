@@ -27,5 +27,5 @@ Here is a list of the basic syntax
 
  - **show** - shows info about the current buffer
 
- - **rot** - rotates the vector by the quantity specified
+ - **rot <angle>** - rotates the vector by the quantity specified
 

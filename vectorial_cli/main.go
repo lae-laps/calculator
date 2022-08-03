@@ -68,6 +68,7 @@ func parse(expression string) {
             } else {
                 printRuntimeError("Invalid number of arguments\n")
             }
+            break
         case "rot":
             if len(split) >= 2 {
                 difference, err := strconv.ParseFloat(split[1], 32)
@@ -76,10 +77,21 @@ func parse(expression string) {
             } else {
                 printRuntimeError("Invalid number of arguments\n")
             }
+            break
+        case "elong":
+            if len(split) >= 2 {
+                ammount, err := strconv.ParseFloat(split[1], 32)
+                handle(err)
+                vec.elong(ammount)
+            } else {
+                printRuntimeError("Invalid number of arguments\n")
+            }
         case "show":
             vec.print_disposition()
+            break
         case "clear":
             clearScreen()
+            break
         case "exit":
             os.Exit(0)
         default:
