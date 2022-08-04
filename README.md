@@ -45,5 +45,7 @@ Here is a list of the basic syntax
 
  - **help** - displays this help message
 
+### Demonstration of the GUI implementation - still not working fully
+
 ![error displaying image -> screenshots/vectorial-gui-1.png](screenshots/vectorial-gui-1.png?raw=true "Title")
 
