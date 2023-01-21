@@ -1,4 +1,3 @@
-# Vectorial Calculus Practice
 
 ## What is this?
 
@@ -10,7 +9,7 @@ Command Line Interface to work with vectorial calculus
 
 ### Installation
 
-`git clone https://github.com/lae-laps/vectorial/`
+`git clone https://github.com/lae-laps/calculator/`
 
 `cd vectorial/vectorial_cli/`
 
@@ -20,8 +19,7 @@ Command Line Interface to work with vectorial calculus
 
 ### Usage
 
-The tool is based on an interactive CLI paradigm
-Here is a list of the basic syntax
+#### Vectorial
 
  - **set <Vₓ> <Vᵧ>** - sets vector from cartesian input
 
@@ -44,8 +42,6 @@ Here is a list of the basic syntax
  - **exit** - exits the program
 
  - **help** - displays this help message
-
-### Demonstration of the GUI implementation - still not working fully
 
 ![error displaying image -> screenshots/vectorial-gui-1.png](screenshots/vectorial-gui-1.png?raw=true "Title")
 
