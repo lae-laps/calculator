@@ -1,7 +1,7 @@
 
 ## What is this?
 
-This is a repository containing software made around vectorial calculus as practice or as POC's
+This is a repository containing software for calculus and maths operations ranging from arithmetics to trigonometry
 
 ## Vector-CLI
 
