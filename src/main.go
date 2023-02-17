@@ -1,148 +1,164 @@
 package main
 
 import (
-    "os"
-    "fmt"
-    "bufio"
-    "strconv"
-    "strings"
+	"io"
+	"os"
+	"fmt"
+
+	"github.com/charmbracelet/bubbles/list"
+	"github.com/charmbracelet/lipgloss"
+	tea "github.com/charmbracelet/bubbletea"
 )
-   
-var vec = vector{
-    x: 1,
-    y: 1,
+
+var option int
+
+const listHeight = 15
+
+var (
+	titleStyle        = lipgloss.NewStyle().MarginLeft(2)
+	itemStyle         = lipgloss.NewStyle().PaddingLeft(4)
+	selectedItemStyle = lipgloss.NewStyle().PaddingLeft(2).Foreground(lipgloss.Color("83"))
+	paginationStyle   = list.DefaultStyles().PaginationStyle.PaddingLeft(4)
+	helpStyle         = list.DefaultStyles().HelpStyle.PaddingLeft(4).PaddingBottom(1)
+	quitTextStyle     = lipgloss.NewStyle().Margin(1, 0, 2, 4)
+)
+
+type item string
+
+func (i item) FilterValue() string { return "" }
+
+type itemDelegate struct{}
+
+func (d itemDelegate) Height() int                               { return 1 }
+func (d itemDelegate) Spacing() int                              { return 0 }
+func (d itemDelegate) Update(msg tea.Msg, m *list.Model) tea.Cmd { return nil }
+func (d itemDelegate) Render(w io.Writer, m list.Model, index int, listItem list.Item) {
+	i, ok := listItem.(item)
+	if !ok {
+		return
+	}
+
+	str := fmt.Sprintf("%d. %s", index+1, i)
+
+	fn := itemStyle.Render
+	if index == m.Index() {
+		fn = func(s string) string {
+			return selectedItemStyle.Render("> " + s)
+		}
+	}
+
+	fmt.Fprint(w, fn(str))
 }
 
-// CLI conf
-const show_changes_in_vectors = true
-const show_full_error_messages = true
-const print_ansi_escapes = true
-
-func handle(err error) int {
-    if err != nil {
-        if show_full_error_messages {
-            printRuntimeError(fmt.Sprintf("error: %s\n", err))
-        } else {
-            printRuntimeError("error: Undefined Runtime Error\n")
-        }
-        return 1
-    } else {
-        return 0
-    }
+type model struct {
+	list     list.Model
+	choice   string
+	quitting bool
 }
 
-func banner() {
-    print(`
-    ╔══════════════════╗
-    ║ VECTORIAL - CLI  ║
-    ╚══════════════════╝
-    
-    `, 15)
+func (m model) Init() tea.Cmd {
+	return nil
 }
 
-func help() {
-    printBold("Help for Vector - CLI\n", 15)
-    fmt.Print(" - "); printBold("set <Vₓ> <Vᵧ>", 15); fmt.Print(" - sets vector from cartesian input\n - ")
-    printBold("show", 15); fmt.Print(" - shows info about the current buffer\n - ")
-    printBold("arc", 15); fmt.Print(" - displays the arc of the vector\n - ")
-    printBold("sector", 15); fmt.Print(" - displays the sector of the vector\n - ")
-    printBold("rot <angle>", 15); fmt.Print(" - rotates the vector by the quantity specified\n - ")
-    printBold("invert", 15); fmt.Print(" - inverts the vector in both cartesian axis\n - ")
-    printBold("flat <x/y>", 15); fmt.Print(" - Flats the vector in the corresponding coordinate\n - ")
-    printBold("elong <amount>", 15); fmt.Print(" - elongates the vector without changing the angle by the ammount provided\n - ")
-    printBold("clear", 15); fmt.Print(" - clears the screen\n - ")
-    printBold("exit", 15); fmt.Print(" - exits the program\n - ")
-    printBold("help", 15); fmt.Print(" - displays this help message\n")
+func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+	switch msg := msg.(type) {
+	case tea.WindowSizeMsg:
+		m.list.SetWidth(msg.Width)
+		return m, nil
+
+	case tea.KeyMsg:
+		switch keypress := msg.String(); keypress {
+		case "ctrl+c":
+			m.quitting = true
+			return m, tea.Quit
+
+		case "enter":
+			i, ok := m.list.SelectedItem().(item)
+			if ok {
+				m.choice = string(i)
+			}
+			return m, tea.Quit
+		}
+	}
+
+	var cmd tea.Cmd
+	m.list, cmd = m.list.Update(msg)
+	return m, cmd
 }
 
-func interactive_ui() {
-    //banner()
-
-    vec.polar_from_cartesian() // set polar coordenates from cartesian as initialized to 100 100 
-
-    for {
-        print("v > ", 15)
-        in := bufio.NewReader(os.Stdin)
-        line, err := in.ReadString('\n')
-        handle(err)
-        line = strings.Replace(line, "\n", "", -1)
-        parse(line)
-    }
-}
-
-func parse(expression string) {
-    split := strings.Split(expression, " ")
-    switch split[0] {
-        case "set":
-            if len(split) >= 3 {
-                x, err := strconv.ParseFloat(split[1], 32)
-                handle(err)
-                y, err := strconv.ParseFloat(split[2], 32)
-                handle(err)
-                vec.set_cart(x, y)
-            } else {
-                printRuntimeError("Invalid number of arguments\n")
-            }
-            break
-        case "rot":
-            if len(split) >= 2 {
-                difference, err := strconv.ParseFloat(split[1], 32)
-                handle(err)
-                vec.rot(difference)
-            } else {
-                printRuntimeError("Invalid number of arguments\n")
-            }
-            break
-        case "elong":
-            if len(split) >= 2 {
-                ammount, err := strconv.ParseFloat(split[1], 32)
-                handle(err)
-                vec.elong(ammount)
-            } else {
-                printRuntimeError("Invalid number of arguments\n")
-            }
-        case "invert":
-            vec.invert()
-            break
-        case "flat":
-            if len(split) >= 2 {
-                switch split[1] {
-                    case "x":
-                        vec.flat('x')
-                    case "y":
-                        vec.flat('y')
-                    case "z":
-                        vec.flat('z')
-                    default:
-                        printUserError("Please use a valid axis - (x/y/z)\n")
-                }
-            } else {
-                printRuntimeError("Invalid number of arguments\n")
-            }
-            break
-        case "show":
-            vec.print_disposition()
-            break
-        case "arc":
-            vec.arc()
-            break
-        case "sector":
-            vec.sector()
-            break
-        case "help":
-            help()
-            break
-        case "clear":
-            clearScreen()
-            break
-        case "exit":
-            os.Exit(0)
-        default:
-            printRuntimeError("Invalid Expression\n")
-    }
+func (m model) View() string {
+	if m.choice != "" {
+		switch m.choice {
+			case "Calculus":
+				option = 1
+				break
+			case "Geometry":
+				option = 2
+				break
+			case "Vectorial":
+				option = 3
+				break
+			case "Physics":
+				option = 4
+		}
+		//return quitTextStyle.Render(fmt.Sprintf("%s? Sounds good to me.", m.choice))
+		
+		return m.choice
+	}
+	if m.quitting {
+		return ""
+	}
+	return "\n" + m.list.View()
 }
 
 func main() {
-    interactive_ui()
+	items := []list.Item{
+		item("Calculus"),
+		item("Geometry"),
+		item("Vectorial"),
+		item("Physics"),
+	}
+
+	const defaultWidth = 20
+
+	l := list.New(items, itemDelegate{}, defaultWidth, listHeight)
+	l.Title = "Calculator"
+	l.SetShowStatusBar(false)
+	l.SetFilteringEnabled(false)
+	//l.Styles.Title = titleStyle
+	l.Styles.Title = lipgloss.NewStyle().
+			Foreground(lipgloss.Color("#FFFDF5")).
+			Background(lipgloss.Color("#25A065")).
+			Padding(0, 1)
+	l.Styles.PaginationStyle = paginationStyle
+	l.Styles.HelpStyle = helpStyle
+
+	m := model{list: l}
+
+	if _, err := tea.NewProgram(m).Run(); err != nil {
+		fmt.Println("Error running program:", err)
+		os.Exit(1)
+	}
+
+	fmt.Printf("selected option #%d\n", option)
+
+	/*	- 1 -> Calculus
+		- 2 -> Geometry
+		- 3 -> Vectorial
+		- 4 -> Physics ( calculations etc )
+	*/
+
+	switch option {
+		case 1:
+			break
+		case 2:
+			geometry_ui()
+			break
+		case 3:
+			vectorial_ui()
+			break
+		case 4:
+			break
+	}
 }
 
