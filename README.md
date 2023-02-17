@@ -1,3 +1,6 @@
+# Calculator
+
+This is an unofficial CLI calculator to which new mathematical functions are added periodically
 
 ## What is this?
 
