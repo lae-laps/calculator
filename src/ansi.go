@@ -8,11 +8,11 @@
 
 // ansi.go
 
-package main 
+package main
 
 import (
     "os"
-    "fmt"    
+    "fmt"
     "time"
     "bufio"
     "strings"
@@ -55,10 +55,9 @@ func inputPassword() string {
 
 func input(prompt string, color int) string {
     print(prompt, color)
-         
-    in := bufio.NewReader(os.Stdin)                                                                                                                                                                          
-    line, err := in.ReadString('\n')                                                                                                                                                                         
-    if err != nil {                                                                                                                                                                                          
+    in := bufio.NewReader(os.Stdin)
+    line, err := in.ReadString('\n')
+    if err != nil {
         printRuntimeError("Error reading line")
     }
     line = strings.Replace(line, "\n", "", -1) // strip chars from line
@@ -68,11 +67,13 @@ func input(prompt string, color int) string {
 func printUserError(content string) {
     print("[!] ", 166)
     print(content, 7)
+    fmt.Println()
 }
 
 func printRuntimeError(content string) {
     print("[#] ", 1)
     print(content, 7)
+    fmt.Println()
 }
 
 func print(content string, color int) {
@@ -84,6 +85,7 @@ func print(content string, color int) {
 func printInfo(info string) {
     print("[+] ", 10)
     print(info, 7)
+    fmt.Println()
 }
 
 func printPrompt(prompt string) {
@@ -111,7 +113,7 @@ func clearScreen() {
 // idk what this is
 func chargingAnimation(interval int, color int) {
     for i := 0; i < 100; i++ {
-        counter := strconv.Itoa(i + 1) 
+        counter := strconv.Itoa(i + 1)
         print("\u001b[1000D" + counter + "%", color)
         time.Sleep(time.Duration(interval) * time.Millisecond)
     }

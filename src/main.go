@@ -112,6 +112,10 @@ func (m model) View() string {
 }
 
 func main() {
+	
+	//chargingAnimation(5, 83)
+	//clearScreen()
+
 	items := []list.Item{
 		item("Calculus"),
 		item("Geometry"),
@@ -140,7 +144,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Printf("selected option #%d\n", option)
+	//fmt.Printf("selected option #%d\n", option)
 
 	/*	- 1 -> Calculus
 		- 2 -> Geometry
