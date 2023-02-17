@@ -43,5 +43,3 @@ Command Line Interface to work with vectorial calculus
 
  - **help** - displays this help message
 
-![error displaying image -> screenshots/vectorial-gui-1.png](screenshots/vectorial-gui-1.png?raw=true "Title")
-
