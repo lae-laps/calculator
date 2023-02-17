@@ -7,6 +7,10 @@ This is a repository containing software for calculus and maths operations rangi
 
 Command Line Interface to work with vectorial calculus
 
+## Geometry
+
+Command Line Interface - geometrical object based manipulation calculations
+
 ### Installation
 
 `git clone https://github.com/lae-laps/calculator/`
